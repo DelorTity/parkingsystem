@@ -13,11 +13,9 @@ public class FareCalculatorService {
         long timeDifference = ticket.getOutTime().getTime() - ticket.getInTime().getTime();
         double duration = (timeDifference / 1000.0) / 3600.0;
 
-       /* int inHour = ticket.getInTime().getHours();
-        int outHour = ticket.getOutTime().getHours();
-
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        int duration = outHour - inHour;*/
+        if(duration < 0.5) {
+            duration = 0;
+        }
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
