@@ -109,4 +109,27 @@ public class TicketDAO {
             return isRecurrentUser;
         }
     }
+
+    public boolean vehicleIsAlreadyInsideTheParking(String vehicleRegNumber) {
+        Connection con = null;
+        boolean isAlreadyInside = false;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.COUNT_NULL_OUT_TIME_TICKETS);
+            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+            ps.setString(1,vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                int count = rs.getInt(1);
+                isAlreadyInside = count > 0;
+            }
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+        }catch (Exception ex){
+            logger.error("Error fetching next available slot",ex);
+        }finally {
+            dataBaseConfig.closeConnection(con);
+            return isAlreadyInside;
+        }
+    }
 }

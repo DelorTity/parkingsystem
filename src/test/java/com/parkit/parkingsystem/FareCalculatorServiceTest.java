@@ -183,7 +183,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareCarWithRecurrentParkingTicketAndMoreThanThirtyMinuteParkingTime() {
         Date inTime = new Date();
-        inTime.setTime(System.currentTimeMillis() - (35 * 60 * 1000));
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
@@ -191,7 +191,8 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket,true);
-        assertNotEquals(0, ticket.getPrice());
+        double expectedPrice = Fare.CAR_RATE_PER_HOUR - (Fare.CAR_RATE_PER_HOUR * 0.05);
+        assertEquals(expectedPrice, ticket.getPrice());
     }
     @Test
     public void calculateFareCarWithRecurrentParkingTicketAndLessThanThirtyMinuteParkingTime() {
@@ -210,7 +211,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareBikeWithRecurrentParkingTicketAndMoreThanThirtyMinuteParkingTime() {
         Date inTime = new Date();
-        inTime.setTime(System.currentTimeMillis() - (35 * 60 * 1000));
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
 
@@ -218,7 +219,8 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket,true);
-        assertNotEquals(0, ticket.getPrice());
+        double expectedPrice = Fare.BIKE_RATE_PER_HOUR - (Fare.BIKE_RATE_PER_HOUR * 0.05);
+        assertEquals(expectedPrice, ticket.getPrice());
     }
 
     @Test
